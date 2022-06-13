@@ -1,3 +1,11 @@
+
+typedef struct Car
+{
+    char *model[21];
+    uint8_t maxspeed;
+    double price;
+} Car;
+
 int alphaCompare(Car *, Car *);
 int alphaCompare_r(Car *, Car *);
 
