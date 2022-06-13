@@ -3,20 +3,20 @@
 
 typedef struct Car
 {
-    char *model[21];
+    char model[21];
     uint8_t maxspeed;
     double price;
 } Car;
 
-int alphaCompare(Car *, Car *);
-int alphaCompare_r(Car *, Car *);
+int alphaCompare(void *, void *);
+int alphaCompare_r(void *, void *);
 
-int speedCompare(Car *, Car *);
-int speedCompare_r(Car *, Car *);
+int speedCompare(void *, void *);
+int speedCompare_r(void *, void *);
 
-int priceCompare(Car *, Car *);
-int priceCompare_r(Car *, Car *);
+int priceCompare(void *, void *);
+int priceCompare_r(void *, void *);
 
-int (*getComparator(int n))(Car *, Car *);
+int (*getComparator(int n))(void *, void *);
 
-void carGenerator(Car cars[]);
+void carGenerator(Car *cars[]);

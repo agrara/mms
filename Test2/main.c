@@ -10,7 +10,7 @@
 int main()
 {
     int option;
-    Car carsArray[10];
+    Car *carsArray[10];
     carGenerator(carsArray);
 
     scanf("%d", &option);
@@ -19,7 +19,7 @@ int main()
 
     for (int i = 0; i < 10; i++)
     {
-        printf("%s %d %lf\n", *(carsArray[i].model), carsArray[i].maxspeed, carsArray[i].price);
+        printf("%s %d %lf\n", carsArray[i]->model, carsArray[i]->maxspeed, carsArray[i]->price);
     }
 
     return 0;
