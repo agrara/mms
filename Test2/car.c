@@ -152,6 +152,6 @@ void carGenerator(Car cars[])
             }
         }
         cars[i].maxspeed = 100 + rand() % (300 + 1 - 100);
-        cars[i].price = (rand() % 10000000) / 100;
+        cars[i].price = (double)(rand() % 10000000) / 100;
     }
 }
