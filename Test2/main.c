@@ -7,13 +7,6 @@
 #include <time.h>
 #include "car.h"
 
-typedef struct Car
-{
-    char *model[21];
-    uint8_t maxspeed;
-    double price;
-} Car;
-
 int main()
 {
     int option;

@@ -1,5 +1,8 @@
 #include "car.h"
 #include <stdint.h>
+#include <math.h>
+#include <stdlib.h>
+#include <time.h>
 
 int alphaCompare(Car *Car1, Car *Car2)
 {
@@ -138,11 +141,11 @@ void carGenerator(Car cars[])
     srand(time(NULL));
     for (int i = 0; i < 10; i++)
     {
-        cars[i].model[0] = 65 + rand() % (90 + 1 - 65);
+        cars[i].model[0] = (char)(65 + rand() % (90 + 1 - 65));
         int numChars = 3 + rand() % (9 + 1 - 3);
         for (int j = 0; j < numChars; j++)
         {
-            cars[i].model[j] = 97 + rand() % (122 + 1 - 97);
+            cars[i].model[j] = (char)(97 + rand() % (122 + 1 - 97));
             if (j == numChars - 1)
             {
                 cars[i].model[j + 1] = 0;

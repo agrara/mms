@@ -1,4 +1,6 @@
 
+#include <stdint.h>
+
 typedef struct Car
 {
     char *model[21];
