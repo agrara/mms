@@ -12,6 +12,7 @@ unsigned bitsNCount(unsigned count, unsigned bitscnt, ...)
 {
     unsigned int masksCount = 0;
     va_list args;
+
     va_start(args, bitscnt);
     for (int i = 0; i < count; i++)
     {
