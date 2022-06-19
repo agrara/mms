@@ -5,6 +5,8 @@ unsigned char CheckBit(unsigned int uValue);
 int main()
 {
     printf("%d\n", CheckBit(2));
+
+    return 0;
 }
 
 unsigned char CheckBit(unsigned int uValue)
