@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include <string.h>
 
-void Reverse(char *ptr);
+void Reverse(char *);
 
 int main()
 {
-    char *arr = "Hello";
+    char arr[50] = "Hello";
     Reverse(arr);
     printf("%s\n", arr);
     return 0;
@@ -12,17 +13,10 @@ int main()
 
 void Reverse(char *ptr)
 {
-    int i = 0;
-    while (ptr[i])
-    {
-        i++;
-    }
+    size_t len = strlen(ptr);
 
-    for (int j = 0; j < (i / 2); j++)
+    for (int i = 0; i < len / 2; i++)
     {
-        char tmp;
-        tmp = ptr[j];
-        *(ptr + j) = 'a';
-        ptr[i - j - 1] = 'b';
+        ptr[i] ^= ptr[len - i - 1] ^= ptr[i] ^= ptr[len - i - 1];
     }
 }
