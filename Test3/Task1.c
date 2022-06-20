@@ -121,7 +121,7 @@ void filterRects(Node **list, double min, double max)
         double area = calculateArea(list[i]);
         if (area < min || area > max)
         {
-            if (i = 0)
+            if (i == 0)
             {
                 HEAD = list[1];
                 free(list[0]);
