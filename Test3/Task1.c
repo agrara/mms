@@ -5,7 +5,7 @@
 
 #define COUNT 10
 
-typedef struct Point
+typedef struct
 {
     double x;
     double y;
@@ -19,124 +19,147 @@ typedef struct
 
 typedef struct Node
 {
-    Rectangle *rectangle;
+    Rectangle rectangle;
     struct Node *next;
 } Node;
 
-Rectangle *generateRectangle();
-void addToRectangleList(Node **);
-double areaRects(Node *);
-void filterRects(Node **list, double min, double max);
-double calculateArea(Node *);
+void generateRectangle(Rectangle *);
+void generateRectangleList(Node **);
+double calculateNodeArea(Node *node);
+double areaRects(Node *list);
+void filterRects(Node **, double, double);
 
 int main()
 {
     Node *HEAD = NULL;
-    for (int i = 0; i < COUNT; i++)
+    generateRectangleList(&HEAD);
+
+    Node *currentNode = HEAD;
+    while (currentNode)
     {
-        addToRectangleList(&HEAD);
+        printf("%lf %lf %lf %lf\n", currentNode->rectangle.a.x, currentNode->rectangle.a.y, currentNode->rectangle.b.x, currentNode->rectangle.b.y);
+        printf("Area: %lf\n", calculateNodeArea(currentNode));
+        currentNode = currentNode->next;
     }
 
-    filterRects(&HEAD, 10, 80);
+    printf("Total areas: %lf\n", areaRects(HEAD));
+    printf("----------------------------------------------\n");
+    filterRects(&HEAD, 10, 100);
 
-    Node *node = HEAD;
-    while (node)
+    currentNode = HEAD;
+    while (currentNode)
     {
-        printf("Area = %lf\n", calculateArea(node));
-        node = node->next;
+        printf("%lf %lf %lf %lf\n", currentNode->rectangle.a.x, currentNode->rectangle.a.y, currentNode->rectangle.b.x, currentNode->rectangle.b.y);
+        printf("Area: %lf\n", calculateNodeArea(currentNode));
+        currentNode = currentNode->next;
     }
 
-    node = HEAD;
-    while (node)
-    {
-        Node *tmp = node;
-        node = node->next;
-        free(tmp);
-    }
+    printf("Total areas: %lf\n", areaRects(HEAD));
 
     return 0;
 }
 
-Rectangle *generateRectangle()
+void generateRectangle(Rectangle *rectangle)
+{
+    rectangle->a.x = ((rand() % 2000 + 1) - 1000) / 100.0;
+    rectangle->a.y = ((rand() % 2000 + 1) - 1000) / 100.0;
+    rectangle->b.x = ((rand() % 2000 + 1) - 1000) / 100.0;
+    rectangle->b.y = ((rand() % 2000 + 1) - 1000) / 100.0;
+}
+
+void generateRectangleList(Node **HEAD)
 {
     srand(time(NULL));
-    Rectangle *newRectangle = malloc(sizeof(Rectangle));
-    newRectangle->a.x = (rand() % 20 + 1) - 10;
-    newRectangle->a.y = (rand() % 20 + 1) - 10;
-    newRectangle->b.x = (rand() % 20 + 1) - 10;
-    newRectangle->b.y = (rand() % 20 + 1) - 10;
-    return newRectangle;
-}
-
-void addToRectangleList(Node **HEAD)
-{
-
-    if (*HEAD)
+    int i = 0;
+    if (!*HEAD)
     {
-        Node *nextNode = (*HEAD)->next;
-        Node *prevNode = *HEAD;
-        while (nextNode)
+        *HEAD = malloc(sizeof(Node));
+        (*HEAD)->next = NULL;
+        generateRectangle(&((*HEAD)->rectangle));
+        i++;
+    }
+    while (i < COUNT)
+    {
+        Node *currentNode = *HEAD;
+        while (currentNode->next)
         {
-            prevNode = nextNode;
-            nextNode = nextNode->next;
+            currentNode = currentNode->next;
         }
 
-        prevNode->next = malloc(sizeof(Node));
-        prevNode->next->next = NULL;
-        prevNode->next->rectangle = generateRectangle();
-    }
-    else
-    {
-        *HEAD = (Node *)malloc(sizeof(Node));
-        (*HEAD)->next = NULL;
-        (*HEAD)->rectangle = generateRectangle();
+        currentNode->next = malloc(sizeof(Node));
+        currentNode->next->next = NULL;
+        generateRectangle(&currentNode->next->rectangle);
+        i++;
     }
 }
 
-double calculateArea(Node *node)
+double calculateNodeArea(Node *node)
 {
-    double side1 = fabs(node->rectangle->a.x - node->rectangle->b.x);
-    double side2 = fabs(node->rectangle->a.y - node->rectangle->b.y);
-    return side1 * side2;
+    return fabs(node->rectangle.a.x - node->rectangle.b.x) * fabs(node->rectangle.a.y - node->rectangle.b.y);
 }
 
 double areaRects(Node *list)
 {
-    double area = 0;
-    while (list)
-    {
-        area += calculateArea(list);
-        list = list->next;
-    }
+    size_t i = 0;
+    Node *currentNode = list;
+    double areas;
 
-    return area;
+    while (currentNode)
+    {
+        areas += calculateNodeArea(currentNode);
+        currentNode = currentNode->next;
+    }
 }
 
 void filterRects(Node **list, double min, double max)
 {
-    Node *HEAD = list[0];
-    size_t i = 0;
-    while (list[i])
+    int i = COUNT;
+    Node *currentNode = *list;
+    Node *previousNode = *list;
+
+    while (currentNode)
     {
-        double area = calculateArea(list[i]);
-        if (area < min || area > max)
+        double area = calculateNodeArea(currentNode);
+        if (min < area - 0.001 && area < max + 0.001)
         {
-            if (i == 0)
+            if (currentNode == *list && i == 1)
             {
-                HEAD = list[1];
-                free(list[0]);
+                *list = NULL;
+                free(currentNode);
+                printf("Removed HEAD only one element\n");
+                return;
+            }
+            else if (currentNode == *list)
+            {
+                *list = currentNode->next;
+                previousNode = *list;
+                free(currentNode);
+                printf("Removed HEAD\n");
+                currentNode = previousNode;
+                i--;
             }
             else
             {
-                Node *prev = list[i - 1];
-                prev->next = list[i]->next;
-                free(list[i]);
+                Node *tmp;
+                previousNode->next = currentNode->next;
+                tmp = currentNode->next;
+                free(currentNode);
+                printf("Removed element\n");
+                currentNode = tmp;
+                i--;
             }
         }
         else
         {
-
-            list[i] = list[i]->next;
+            if (previousNode == *list && currentNode == *list)
+            {
+                currentNode = currentNode->next;
+            }
+            else
+            {
+                previousNode = currentNode;
+                currentNode = currentNode->next;
+            }
         }
     }
 }
