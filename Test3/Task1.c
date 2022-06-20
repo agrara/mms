@@ -74,14 +74,16 @@ void addToRectangleList(Node **HEAD)
     if (*HEAD)
     {
         Node *nextNode = (*HEAD)->next;
+        Node *prevNode;
         while (nextNode)
         {
+            prevNode = nextNode;
             nextNode = nextNode->next;
         }
 
-        nextNode->next = malloc(sizeof(Node));
-        nextNode->next->next = NULL;
-        nextNode->next->rectangle = generateRectangle();
+        prevNode->next = malloc(sizeof(Node));
+        prevNode->next->next = NULL;
+        prevNode->next->rectangle = generateRectangle();
     }
     else
     {
