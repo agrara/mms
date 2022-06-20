@@ -71,7 +71,7 @@ Rectangle *generateRectangle()
 void addToRectangleList(Node **HEAD)
 {
 
-    if (HEAD)
+    if (*HEAD)
     {
         Node *nextNode = (*HEAD)->next;
         while (nextNode)
