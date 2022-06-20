@@ -24,7 +24,7 @@ typedef struct Node
 } Node;
 
 Rectangle *generateRectangle();
-void addToRectangleList(Node *);
+void addToRectangleList(Node **);
 double areaRects(Node *);
 void filterRects(Node **list, double min, double max);
 double calculateArea(Node *);
@@ -34,7 +34,7 @@ int main()
     Node *HEAD = NULL;
     for (int i = 0; i < COUNT; i++)
     {
-        addToRectangleList(HEAD);
+        addToRectangleList(&HEAD);
     }
 
     filterRects(&HEAD, 10, 80);
@@ -68,12 +68,12 @@ Rectangle *generateRectangle()
     return newRectangle;
 }
 
-void addToRectangleList(Node *HEAD)
+void addToRectangleList(Node **HEAD)
 {
 
     if (HEAD)
     {
-        Node *nextNode = HEAD->next;
+        Node *nextNode = (*HEAD)->next;
         while (nextNode)
         {
             nextNode = nextNode->next;
@@ -85,9 +85,9 @@ void addToRectangleList(Node *HEAD)
     }
     else
     {
-        HEAD = (Node *)malloc(sizeof(Node));
-        HEAD->next = NULL;
-        HEAD->rectangle = generateRectangle();
+        *HEAD = (Node *)malloc(sizeof(Node));
+        (*HEAD)->next = NULL;
+        (*HEAD)->rectangle = generateRectangle();
     }
 }
 
