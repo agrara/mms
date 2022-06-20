@@ -74,7 +74,7 @@ void addToRectangleList(Node **HEAD)
     if (*HEAD)
     {
         Node *nextNode = (*HEAD)->next;
-        Node *prevNode;
+        Node *prevNode = *HEAD;
         while (nextNode)
         {
             prevNode = nextNode;
