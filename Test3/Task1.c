@@ -56,6 +56,15 @@ int main()
 
     printf("Total areas: %lf\n", areaRects(HEAD));
 
+    currentNode = HEAD;
+    while (currentNode)
+    {
+        Node *tmp;
+        tmp = currentNode->next;
+        free(currentNode);
+        currentNode = tmp;
+    }
+
     return 0;
 }
 
@@ -126,7 +135,6 @@ void filterRects(Node **list, double min, double max)
             {
                 *list = NULL;
                 free(currentNode);
-                printf("Removed HEAD only one element\n");
                 return;
             }
             else if (currentNode == *list)
@@ -134,7 +142,6 @@ void filterRects(Node **list, double min, double max)
                 *list = currentNode->next;
                 previousNode = *list;
                 free(currentNode);
-                printf("Removed HEAD\n");
                 currentNode = previousNode;
                 i--;
             }
@@ -144,7 +151,6 @@ void filterRects(Node **list, double min, double max)
                 previousNode->next = currentNode->next;
                 tmp = currentNode->next;
                 free(currentNode);
-                printf("Removed element\n");
                 currentNode = tmp;
                 i--;
             }
